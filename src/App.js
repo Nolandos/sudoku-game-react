@@ -8,8 +8,23 @@ import Board from './components/Board/Board';
 
 const Main = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const Buttons = styled.div`
+  margin-top: 25px;
+`;
+
+const Btn = styled.button`
+  margin: 0 5px;
+  padding: 5px 25px;
+`;
+
+const CheckInfo = styled.div`
+  margin-top: 25px;
+  font-size: 1.5em;
 `;
 
 class App extends React.Component {  
@@ -69,14 +84,14 @@ class App extends React.Component {
         <h1>Sudoku</h1>
         <Board board = { this.state.board } initialBoard = { this.state.initialBoard } onChange = {this.changeBoard} />
       </div>
-      <div className="buttons">
-        <button onClick = { this.checkSolution } >Check</button>
-        <button onClick = { this.getNewGame }>New Game</button>
-        <button onClick = { this.getSolve }>Solve</button>
-        <button onClick = { this.restart }>Restart</button>
-        {this.state.check === 'resolved' && <div>Brawo Udało ci się !</div> } 
-        {this.state.check === 'unresolved' && <div>Ups, coś poszło nie tak :/</div>}
-      </div>
+      {this.state.check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
+      {this.state.check === 'unresolved' && <CheckInfo>Ups, coś poszło nie tak :/</CheckInfo>}
+      <Buttons>
+        <Btn onClick = { this.checkSolution } >Check</Btn>
+        <Btn onClick = { this.getNewGame }>New Game</Btn>
+        <Btn onClick = { this.getSolve }>Solve</Btn>
+        <Btn onClick = { this.restart }>Restart</Btn>
+      </Buttons>
     </Main>
     );
   }
