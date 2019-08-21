@@ -14,7 +14,7 @@ const Main = styled.div`
 `;
 
 const Buttons = styled.div`
-  margin-top: 25px;
+  margin-top: 15px;
 `;
 
 const Btn = styled.button`
@@ -34,9 +34,9 @@ class App extends React.Component {
       check: ''
   }
 
-  getNewGame = () => {
+  getNewGame = (e) => {
     console.log('Nowa gra');
-    const sudokuString = sudoku.generate("easy");
+    const sudokuString = sudoku.generate(e.target.value);
     this.setState({
       initialBoard: sudokuString,
       board: sudokuString,
@@ -86,11 +86,18 @@ class App extends React.Component {
       </div>
       {this.state.check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
       {this.state.check === 'unresolved' && <CheckInfo>Ups, coś poszło nie tak :/</CheckInfo>}
+      {this.state.initialBoard !== '' &&
       <Buttons>
         <Btn onClick = { this.checkSolution } >Check</Btn>
-        <Btn onClick = { this.getNewGame }>New Game</Btn>
         <Btn onClick = { this.getSolve }>Solve</Btn>
-        <Btn onClick = { this.restart }>Restart</Btn>
+        <Btn onClick = { this.restart }>Restart</Btn> 
+      </Buttons>
+      }
+      <Buttons>
+        <h2>Wybierz poziom trudności gry:</h2>
+        <Btn onClick = { this.getNewGame } value="easy">Łatwy</Btn>
+        <Btn onClick = { this.getNewGame } value="medium">Średni</Btn>
+        <Btn onClick = { this.getNewGame } value="hard">Trudny</Btn>
       </Buttons>
     </Main>
     );

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-//import './Tile.scss';
+import './Tile.scss';
+import boarded from './board';
 
 const Input = styled.input`
     border: 1px solid #000;
@@ -26,10 +27,21 @@ class Tile extends React.Component {
         }
     }
 
-    setLine = () => {
-        if(this.props.id % 3 === 0) {
-            console.log()
-        }
+    checkPlace = (e) => {
+       const inputs = document.querySelectorAll('.tile');
+       boarded.forEach((item, index) => {
+           if(item.row === boarded[this.props.id].row || item.column === boarded[this.props.id].column) {  
+            inputs[index].classList.add('active');
+           }
+       })
+          
+    }
+
+    removeActive = () => {
+        const inputs = document.querySelectorAll('.tile');
+        inputs.forEach(item => {
+            item.classList.remove('active');
+        });  
     }
 
     render () {
@@ -43,7 +55,9 @@ class Tile extends React.Component {
                 value = { number === '.' ? '' : number }
                 disabled = { isNaN(initialNumber) ? false : true }
                 onChange = { this.handleChange } 
-                onKeyDown = {this.checkKey}            
+                onKeyDown = { this.checkKey } 
+                onFocus = { this.checkPlace }
+                onBlur = { this.removeActive }           
             ></Input>
         );
     }
