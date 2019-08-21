@@ -8,7 +8,6 @@ import Board from './components/Board/Board';
 
 const Main = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
@@ -17,6 +16,7 @@ class App extends React.Component {
   state = {
       initialBoard: '',
       board: '',
+      check: ''
   }
 
   getNewGame = () => {
@@ -24,7 +24,8 @@ class App extends React.Component {
     const sudokuString = sudoku.generate("easy");
     this.setState({
       initialBoard: sudokuString,
-      board: sudokuString
+      board: sudokuString,
+      check: ''
     });
   }
 
@@ -41,33 +42,40 @@ class App extends React.Component {
     console.log('Uwaga Sprawdzamy');
     if(sudoku.solve(this.state.initialBoard) === this.state.board) {
       console.log('Rozwiązałeś Brawo !');
+      this.setState({check: 'resolved'});
     } else {
+      this.setState({check: 'unresolved'});
       console.log('No niestety, nie udało się :/');
     };
   }
 
   getSolve = () => {
-    console.log(sudoku.solve(this.state.initialBoard));
     this.setState({
-      initialBoard: sudoku.solve(this.state.initialBoard),
       board: sudoku.solve(this.state.initialBoard)
     })
   }
   
   restart = () => {
-    console.log(this.state.board);
+    this.setState({
+      board: this.state.initialBoard,
+      check: ''
+    })
   }
 
   render () {
     return (
       <Main className="App">
-      <h1>Sudoku</h1>
-      <Board board = { this.state.board } initialBoard = { this.state.initialBoard } onChange = {this.changeBoard} />
+      <div>
+        <h1>Sudoku</h1>
+        <Board board = { this.state.board } initialBoard = { this.state.initialBoard } onChange = {this.changeBoard} />
+      </div>
       <div className="buttons">
         <button onClick = { this.checkSolution } >Check</button>
         <button onClick = { this.getNewGame }>New Game</button>
         <button onClick = { this.getSolve }>Solve</button>
         <button onClick = { this.restart }>Restart</button>
+        {this.state.check === 'resolved' && <div>Brawo Udało ci się !</div> } 
+        {this.state.check === 'unresolved' && <div>Ups, coś poszło nie tak :/</div>}
       </div>
     </Main>
     );
