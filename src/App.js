@@ -19,17 +19,16 @@ class App extends React.Component {
       board: '',
   }
 
-  getNewGame = async() => {
+  getNewGame = () => {
     console.log('Nowa gra');
-    const number = sudoku.generate("easy");
-    await this.setState({
-      initialBoard: number,
-      board: number
+    const sudokuString = sudoku.generate("easy");
+    this.setState({
+      initialBoard: sudokuString,
+      board: sudokuString
     });
-  
   }
 
-  handleC = (number, id) => {
+  changeBoard = (number, id) => {
     if(number === '') {
       number = '.';
     } 
@@ -59,7 +58,7 @@ class App extends React.Component {
     return (
       <Main className="App">
       <h1>Sudoku</h1>
-      <Board board = { this.state } onChange = {this.handleC} />
+      <Board board = { this.state.board } initialBoard = { this.state.initialBoard } onChange = {this.changeBoard} />
       <div className="buttons">
         <button onClick = { this.checkSolution } >Check</button>
         <button onClick = { this.getNewGame }>New Game</button>

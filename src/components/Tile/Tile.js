@@ -8,26 +8,30 @@ const Input = styled.input`
     text-align: center;
 `;
 
-class Tile extends React.Component {
-    state = {
-        number: this.props.number
+class Tile extends React.Component { 
+    handleChange = (e) => {
+        if (e.target.value <= 9) {
+            this.props.onChange(e.target.value, this.props.id);
+        }   
     }
-    
-    handleChange = async (e) => {
-        await this.setState({ number: e.target.value});
-        this.props.onChange(this.state.number, this.props.id);
+
+    checkKey = (e) => {
+        if(e.key === '-' || e.key === 'e' || e.key === '+') {
+            e.preventDefault();
+        }
     }
 
     render () {
-        const { number } = this.props;
+        const { number, initialNumber } = this.props;
         return (
             <Input
                 type = "number"
                 min = "1"
                 max = "9"
-                defaultValue = { number === '.' ? '' : number }
-                disabled = { isNaN(number) ? false : true }
-                onChange = { this.handleChange }             
+                value = { number === '.' ? '' : number }
+                disabled = { isNaN(initialNumber) ? false : true }
+                onChange = { this.handleChange } 
+                onKeyDown = {this.checkKey}            
             ></Input>
         );
     }

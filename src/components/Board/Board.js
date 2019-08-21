@@ -9,9 +9,9 @@ const NewBoard = styled.div`
     flex-wrap: wrap;
 `;
 
-const Board = ({ board, onChange }) => 
+const Board = ({ board, initialBoard, onChange }) => 
     <NewBoard>
-        { board.initialBoard.split('').map((item, index) => <Tile onChange = {(number, id) => onChange(number, id) }  key = { index } id = { index } number={ item }/>) }
+        { board.split('').map((item, index) => <Tile onChange = {(number, id) => onChange(number, id) }  key = { index } id = { index } initialNumber = { initialBoard[index] } number = { item }/>) }
     </NewBoard>
 
 
