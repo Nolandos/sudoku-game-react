@@ -48,6 +48,10 @@ class App extends React.Component {
 
   getSolve = () => {
     console.log(sudoku.solve(this.state.initialBoard));
+    this.setState({
+      initialBoard: sudoku.solve(this.state.initialBoard),
+      board: sudoku.solve(this.state.initialBoard)
+    })
   }
   
   restart = () => {
