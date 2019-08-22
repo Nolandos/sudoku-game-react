@@ -8,23 +8,58 @@ import Board from './components/Board/Board';
 
 const Main = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
 `;
 
 const Buttons = styled.div`
-  margin-top: 15px;
+  margin-top: 25px;
 `;
 
 const Btn = styled.button`
+  font-size: 1.2em;
+  font-weight: bold;
+  font-family: 'Kaushan Script', cursive;
   margin: 0 5px;
-  padding: 5px 25px;
+  padding: 10px 35px;
+  border: 4px solid #041C5E;
+  border-radius: 5px;
+  background-color: #fff;
+  outline: none;
+  cursor: pointer;
+  &.hard {
+    background-color: #D70000;
+    :hover {
+      background-color: #F34E4E;
+    }
+  }
+  &.medium {
+    background-color: #D7A500;
+    :hover {
+      background-color: #F3CD4E;
+    }
+  }
+  &.easy {
+    background-color: #11B000;
+    :hover {
+      background-color: #89E380;
+    }
+  }
 `;
 
 const CheckInfo = styled.div`
   margin-top: 25px;
   font-size: 1.5em;
+`;
+
+const Wrapper = styled.div`
+  margin-top: 5%;
+  margin-left: 5%;
+`;
+
+const Title = styled.h1 `
+  font-size: 3.5em;
+  margin: 15px 0;
+  color: #102C4B;
 `;
 
 class App extends React.Component {  
@@ -33,7 +68,8 @@ class App extends React.Component {
       board: '236958147847316295591724386163579824782431569459682731374865912915243678628197453',
       check: '',
       stepId: 0,
-      history: []
+      history: [],
+      start: false
   }
 
   getNewGame = (e) => {
@@ -44,7 +80,8 @@ class App extends React.Component {
       board: sudokuString,
       history: [sudokuString],
       stepId: 0,
-      check: ''
+      check: '',
+      start: true
     });
   }
 
@@ -118,33 +155,38 @@ class App extends React.Component {
   }
 
   render () {
-    const { check, initialBoard, board, } = this.state;
+    const { check, initialBoard, board, start } = this.state;
 
     return (
       <Main className="App">
       <div>
-        <h1>Sudoku</h1>
+        <Title>Sudoku</Title>
         <Board board = { board } initialBoard = { initialBoard } onChange = {this.changeBoard} />
       </div>
-      { check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
-      { check === 'unresolved' && <CheckInfo>Ups, coś poszło nie tak :/</CheckInfo> }
-      { initialBoard !== '' &&
-      <Buttons>
-        <Btn onClick = { this.checkSolution } >Check</Btn>
-        <Btn onClick = { this.getSolve }>Solve</Btn>
-        <Btn onClick = { this.restart }>Restart</Btn> 
-      </Buttons>
-      }
-      <Buttons>
+      <Wrapper>
         <h2>Wybierz poziom trudności gry:</h2>
-        <Btn onClick = { this.getNewGame } value="easy">Łatwy</Btn>
-        <Btn onClick = { this.getNewGame } value="medium">Średni</Btn>
-        <Btn onClick = { this.getNewGame } value="hard">Trudny</Btn>
-      </Buttons>
-      <Buttons>
-        <Btn onClick = { this.undo }>Cofnij</Btn>
-        <Btn onClick = { this.redo }>Powtórz</Btn>
-      </Buttons>
+        <Buttons>
+          <Btn className="easy" onClick = { this.getNewGame } value="easy">Łatwy</Btn>
+          <Btn className="medium" onClick = { this.getNewGame } value="medium">Średni</Btn>
+          <Btn className="hard" onClick = { this.getNewGame } value="hard">Trudny</Btn>
+        </Buttons>
+        { start &&
+          <div>
+          <h2>Opcje tablicy:</h2>
+          <Buttons>
+            <Btn onClick = { this.checkSolution }>Sprawdź</Btn>
+            <Btn onClick = { this.getSolve }>Rozwiązanie</Btn>
+            <Btn onClick = { this.restart }>Od nowa</Btn> 
+          </Buttons>
+          <Buttons>
+            <Btn onClick = { this.undo }>Cofnij</Btn>
+            <Btn onClick = { this.redo }>Powtórz</Btn>
+          </Buttons>
+          </div>
+        }
+        { check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
+        { check === 'unresolved' && <CheckInfo>Ups, coś poszło nie tak :/</CheckInfo> }
+      </Wrapper>
     </Main>
     );
   }

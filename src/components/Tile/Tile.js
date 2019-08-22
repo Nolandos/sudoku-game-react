@@ -33,12 +33,16 @@ class Tile extends React.Component {
            if(item.row === boarded[this.props.id].row || item.column === boarded[this.props.id].column) {  
             inputs[index].classList.add('active');
            }
+           if(item.row === boarded[this.props.id].row && item.column === boarded[this.props.id].column) {  
+            inputs[index].classList.add('main-active');
+           }
        })      
     }
 
     removeActive = () => {
         const inputs = document.querySelectorAll('.tile');
         inputs.forEach(item => {
+            item.classList.remove('main-active');
             item.classList.remove('active');
         });  
     }
