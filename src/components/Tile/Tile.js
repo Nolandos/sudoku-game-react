@@ -16,7 +16,7 @@ const Input = styled.input`
 
 class Tile extends React.Component { 
     handleChange = (e) => {
-        if (e.target.value <= 9) {
+        if (e.target.value <= 9 && e.target.value >0) {
             this.props.onChange(e.target.value, this.props.id);
         }   
     }
@@ -33,8 +33,7 @@ class Tile extends React.Component {
            if(item.row === boarded[this.props.id].row || item.column === boarded[this.props.id].column) {  
             inputs[index].classList.add('active');
            }
-       })
-          
+       })      
     }
 
     removeActive = () => {

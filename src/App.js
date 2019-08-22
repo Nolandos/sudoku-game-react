@@ -29,8 +29,8 @@ const CheckInfo = styled.div`
 
 class App extends React.Component {  
   state = {
-      initialBoard: '',
-      board: '',
+      initialBoard: '236958147847316295591724386163579824782431569459682731374865912915243678628197453',
+      board: '236958147847316295591724386163579824782431569459682731374865912915243678628197453',
       check: '',
       stepId: 0,
       history: []
@@ -75,53 +75,60 @@ class App extends React.Component {
   }
 
   getSolve = () => {
+    const { initialBoard } = this.state;
+
     this.setState({
-      board: sudoku.solve(this.state.initialBoard)
+      board: sudoku.solve(initialBoard)
     })
   }
   
   restart = () => {
+    const { initialBoard } = this.state;
     this.setState({
-      board: this.state.initialBoard,
+      board: initialBoard,
       check: '',
-      history: [this.state.initialBoard],
+      history: [initialBoard],
       stepId: 0
     })
   }
 
   undo = () => {
-    const currentId = this.state.stepId;
+    const { stepId, history } = this.state;
+    const currentId = stepId;
 
     if(currentId > 0) {
       this.setState({
-        board: this.state.history[currentId -1],
+        board: history[currentId -1],
         stepId: currentId -1
       })
     }
   }
 
   redo = () => {
-    const currentId = this.state.stepId +1;
+    const { stepId, history } = this.state;
+    const currentId = stepId +1;
 
-    if(currentId < this.state.history.length) {
-      let currentId = this.state.stepId +1
+    if(currentId < history.length) {
+      let currentId = stepId +1
       this.setState({
-        board: this.state.history[currentId],
+        board: history[currentId],
         stepId: currentId
       })
     }
   }
 
   render () {
+    const { check, initialBoard, board, } = this.state;
+
     return (
       <Main className="App">
       <div>
         <h1>Sudoku</h1>
-        <Board board = { this.state.board } initialBoard = { this.state.initialBoard } onChange = {this.changeBoard} />
+        <Board board = { board } initialBoard = { initialBoard } onChange = {this.changeBoard} />
       </div>
-      {this.state.check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
-      {this.state.check === 'unresolved' && <CheckInfo>Ups, coś poszło nie tak :/</CheckInfo>}
-      {this.state.initialBoard !== '' &&
+      { check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
+      { check === 'unresolved' && <CheckInfo>Ups, coś poszło nie tak :/</CheckInfo> }
+      { initialBoard !== '' &&
       <Buttons>
         <Btn onClick = { this.checkSolution } >Check</Btn>
         <Btn onClick = { this.getSolve }>Solve</Btn>
