@@ -31,7 +31,9 @@ class App extends React.Component {
   state = {
       initialBoard: '',
       board: '',
-      check: ''
+      check: '',
+      stepId: 0,
+      history: []
   }
 
   getNewGame = (e) => {
@@ -40,6 +42,8 @@ class App extends React.Component {
     this.setState({
       initialBoard: sudokuString,
       board: sudokuString,
+      history: [sudokuString],
+      stepId: 0,
       check: ''
     });
   }
@@ -50,7 +54,13 @@ class App extends React.Component {
     } 
     const newBoard = this.state.board.split('');
     newBoard[id] = number;
-    this.setState({ board: newBoard.join('') });
+    const steps = this.state.history.slice(0,this.state.stepId+1);
+    steps.push(newBoard.join(''));
+    this.setState({ 
+      board: newBoard.join(''),
+      history: steps,
+      stepId: this.state.stepId + 1
+    });
   }
 
   checkSolution = () => {
@@ -73,8 +83,33 @@ class App extends React.Component {
   restart = () => {
     this.setState({
       board: this.state.initialBoard,
-      check: ''
+      check: '',
+      history: [this.state.initialBoard],
+      stepId: 0
     })
+  }
+
+  undo = () => {
+    const currentId = this.state.stepId;
+
+    if(currentId > 0) {
+      this.setState({
+        board: this.state.history[currentId -1],
+        stepId: currentId -1
+      })
+    }
+  }
+
+  redo = () => {
+    const currentId = this.state.stepId +1;
+
+    if(currentId < this.state.history.length) {
+      let currentId = this.state.stepId +1
+      this.setState({
+        board: this.state.history[currentId],
+        stepId: currentId
+      })
+    }
   }
 
   render () {
@@ -98,6 +133,10 @@ class App extends React.Component {
         <Btn onClick = { this.getNewGame } value="easy">Łatwy</Btn>
         <Btn onClick = { this.getNewGame } value="medium">Średni</Btn>
         <Btn onClick = { this.getNewGame } value="hard">Trudny</Btn>
+      </Buttons>
+      <Buttons>
+        <Btn onClick = { this.undo }>Cofnij</Btn>
+        <Btn onClick = { this.redo }>Powtórz</Btn>
       </Buttons>
     </Main>
     );
