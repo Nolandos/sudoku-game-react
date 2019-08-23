@@ -1,4 +1,4 @@
-const boarded = [{
+const boardBase = [{
     row: 1,
     column: 1
    },{
@@ -320,4 +320,4 @@ const boarded = [{
    }
 ];
 
-export default boarded;
+export default boardBase;

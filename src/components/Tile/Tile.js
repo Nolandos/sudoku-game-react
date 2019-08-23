@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import './Tile.scss';
-import boarded from './board';
+import boardBase from './board';
 
 const Input = styled.input`
     border: 1px solid #000;
@@ -12,6 +12,8 @@ const Input = styled.input`
     width: 50px;
     height: 50px;
     text-align: center;
+    font-size: 1.2em;
+    font-family: 'Kaushan Script', cursive;
 `;
 
 class Tile extends React.Component { 
@@ -28,15 +30,17 @@ class Tile extends React.Component {
     }
 
     checkPlace = (e) => {
-       const inputs = document.querySelectorAll('.tile');
-       boarded.forEach((item, index) => {
-           if(item.row === boarded[this.props.id].row || item.column === boarded[this.props.id].column) {  
-            inputs[index].classList.add('active');
-           }
-           if(item.row === boarded[this.props.id].row && item.column === boarded[this.props.id].column) {  
-            inputs[index].classList.add('main-active');
-           }
-       })      
+        const inputs = document.querySelectorAll('.tile');
+        const { id } = this.props;
+
+        boardBase.forEach((item, index) => {
+            if(item.row === boardBase[id].row || item.column === boardBase[id].column) {  
+                inputs[index].classList.add('active');
+            }
+            if(item.row === boardBase[id].row && item.column === boardBase[id].column) {  
+                inputs[index].classList.add('main-active');
+            }
+        })      
     }
 
     removeActive = () => {

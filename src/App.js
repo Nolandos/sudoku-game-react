@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import "./fontello/css/fontello.css";
 import sudoku from 'sudoku-umd';
 import styled from 'styled-components';
 
@@ -9,6 +10,7 @@ import Board from './components/Board/Board';
 const Main = styled.div`
   display: flex;
   justify-content: center;
+  position: relative;
 `;
 
 const Buttons = styled.div`
@@ -19,41 +21,66 @@ const Btn = styled.button`
   font-size: 1.2em;
   font-weight: bold;
   font-family: 'Kaushan Script', cursive;
-  margin: 0 5px;
+  margin: 5px 5px;
   padding: 10px 35px;
   border: 4px solid #041C5E;
   border-radius: 5px;
   background-color: #fff;
   outline: none;
   cursor: pointer;
+
   &.hard {
     background-color: #D70000;
     :hover {
       background-color: #F34E4E;
     }
   }
+
   &.medium {
     background-color: #D7A500;
     :hover {
       background-color: #F3CD4E;
     }
   }
+
   &.easy {
     background-color: #11B000;
     :hover {
       background-color: #89E380;
     }
   }
+
+  &.undo {
+    background-color: #11B000;
+    :hover {
+      background-color: #89E380;
+    }
+  }
+
+  &.redo {
+    background-color: #D70000;
+    :hover {
+      background-color: #F34E4E;
+    }
+  }
+  &.board-option {
+    :hover {
+      background-color: lightgrey;
+    }
+  }
 `;
 
 const CheckInfo = styled.div`
-  margin-top: 25px;
-  font-size: 1.5em;
+  margin: 23px 0;
+  font-size: 2.8em;
+  text-shadow: 2px 2px #000;
+  color: #A90060;
 `;
 
 const Wrapper = styled.div`
   margin-top: 5%;
   margin-left: 5%;
+  width: 40%;
 `;
 
 const Title = styled.h1 `
@@ -96,7 +123,8 @@ class App extends React.Component {
     this.setState({ 
       board: newBoard.join(''),
       history: steps,
-      stepId: this.state.stepId + 1
+      stepId: this.state.stepId + 1,
+      check: ''
     });
   }
 
@@ -106,8 +134,8 @@ class App extends React.Component {
       console.log('Rozwiązałeś Brawo !');
       this.setState({check: 'resolved'});
     } else {
-      this.setState({check: 'unresolved'});
       console.log('No niestety, nie udało się :/');
+      this.setState({check: 'unresolved'});
     };
   }
 
@@ -121,6 +149,7 @@ class App extends React.Component {
   
   restart = () => {
     const { initialBoard } = this.state;
+
     this.setState({
       board: initialBoard,
       check: '',
@@ -160,11 +189,13 @@ class App extends React.Component {
     return (
       <Main className="App">
       <div>
-        <Title>Sudoku</Title>
-        <Board board = { board } initialBoard = { initialBoard } onChange = {this.changeBoard} />
+        { check === '' && <Title>Sudoku</Title> }
+        { check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
+        { check === 'unresolved' && <CheckInfo>Ups, Błędne rozwiązanie !</CheckInfo> }
+        <Board board = { board } initialBoard = { initialBoard } onChange = {this.changeBoard} />   
       </div>
       <Wrapper>
-        <h2>Wybierz poziom trudności gry:</h2>
+        <h2>Wybierz poziom trudności sudoku:</h2>
         <Buttons>
           <Btn className="easy" onClick = { this.getNewGame } value="easy">Łatwy</Btn>
           <Btn className="medium" onClick = { this.getNewGame } value="medium">Średni</Btn>
@@ -172,20 +203,19 @@ class App extends React.Component {
         </Buttons>
         { start &&
           <div>
-          <h2>Opcje tablicy:</h2>
+          <h2>Opcje sudoku:</h2>
           <Buttons>
-            <Btn onClick = { this.checkSolution }>Sprawdź</Btn>
-            <Btn onClick = { this.getSolve }>Rozwiązanie</Btn>
-            <Btn onClick = { this.restart }>Od nowa</Btn> 
+            <Btn className="icon-ok board-option" onClick = { this.checkSolution }>Sprawdź</Btn>
+            <Btn className="icon-key board-option" onClick = { this.getSolve }>Rozwiązanie</Btn>
+            <Btn className="icon-gamepad board-option" onClick = { this.restart }>Od nowa</Btn> 
           </Buttons>
+          <h2>Ruchy Gracza:</h2>
           <Buttons>
-            <Btn onClick = { this.undo }>Cofnij</Btn>
-            <Btn onClick = { this.redo }>Powtórz</Btn>
+            <Btn className="icon-ccw undo" onClick = { this.undo }></Btn>
+            <Btn className="icon-cw redo" onClick = { this.redo }></Btn>
           </Buttons>
           </div>
         }
-        { check === 'resolved' && <CheckInfo>Brawo Udało ci się !</CheckInfo> } 
-        { check === 'unresolved' && <CheckInfo>Ups, coś poszło nie tak :/</CheckInfo> }
       </Wrapper>
     </Main>
     );
