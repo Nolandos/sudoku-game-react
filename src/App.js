@@ -1,11 +1,13 @@
 import React from 'react';
 import './App.css';
-import "./fontello/css/fontello.css";
 import sudoku from 'sudoku-umd';
 import styled from 'styled-components';
 
 //Import Components
 import Board from './components/Board/Board';
+
+//Icons
+import { FaUndoAlt, FaRedoAlt, FaCheck, FaGamepad, FaQuestion  } from "react-icons/fa";
 
 const Main = styled.div`
   display: flex;
@@ -15,6 +17,10 @@ const Main = styled.div`
 
 const Buttons = styled.div`
   margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 const Btn = styled.button`
@@ -28,6 +34,12 @@ const Btn = styled.button`
   background-color: #fff;
   outline: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+
+  >svg {
+    margin-left: 10px;
+  }
 
   &.hard {
     background-color: #D70000;
@@ -205,14 +217,14 @@ class App extends React.Component {
           <div>
           <h2>Opcje sudoku:</h2>
           <Buttons>
-            <Btn className="icon-ok board-option" onClick = { this.checkSolution }>Sprawdź</Btn>
-            <Btn className="icon-key board-option" onClick = { this.getSolve }>Rozwiązanie</Btn>
-            <Btn className="icon-gamepad board-option" onClick = { this.restart }>Od nowa</Btn> 
+            <Btn className="board-option" onClick = { this.checkSolution }>Sprawdź <FaQuestion /></Btn>
+            <Btn className="board-option" onClick = { this.getSolve }>Rozwiązanie <FaCheck /></Btn>
+            <Btn className="board-option" onClick = { this.restart }>Od nowa <FaGamepad /></Btn> 
           </Buttons>
           <h2>Ruchy Gracza:</h2>
           <Buttons>
-            <Btn className="icon-ccw undo" onClick = { this.undo }></Btn>
-            <Btn className="icon-cw redo" onClick = { this.redo }></Btn>
+            <Btn className="undo" onClick = { this.undo }><FaUndoAlt /></Btn>
+            <Btn className="redo" onClick = { this.redo }><FaRedoAlt /></Btn>
           </Buttons>
           </div>
         }

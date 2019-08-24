@@ -6,6 +6,7 @@
     "node-sass": "^4.12.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-icons": "^3.7.0",
     "react-scripts": "3.1.1",
     "styled-components": "^4.3.2",
     "sudoku-umd": "^1.0.1"
