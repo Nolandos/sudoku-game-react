@@ -6,7 +6,7 @@ App was deployed on Heroku server:
 
 https://sudoku-game-react.herokuapp.com/
 
-# Technologies (MERN stack) :
+# Technologies:
 - React
 - sudoku-umd 
 - Sass + Styled components
